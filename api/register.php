@@ -29,8 +29,8 @@ $hash = password_hash($password, PASSWORD_DEFAULT);
 $stmt = $conn->prepare(
     "INSERT INTO user 
     (firstname, lastname, username, date_of_birth, email, password) 
-    VALUES (?, ?, ?, ?, ?)"
+    VALUES (?, ?, ?, ?, ?, ?)"
 );
-$stmt->execute([$firstname, $lastname, $username, $date_of_birth, $email, $password]);
+$stmt->execute([$firstname, $lastname, $username, $date_of_birth, $email, $hash]);
 
 echo json_encode(["status" => "success", "message" => "Usuário registrado com sucesso"]);
