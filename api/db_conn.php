@@ -17,9 +17,10 @@ $options = [
 
 try {
     $conn = new PDO($dsn_connection, $username, $password, $options);
-    echo "connected successfully.";
+    echo json_encode(["status" => "success", "message" => "Connected successfully."]);
 
 } catch (PDOException $error) {
-    echo "Connection error: " . $error->getMessage();
+    http_response_code(500);
+    echo json_encode(["status" => "error", "message" => $error->getMessage()]);
     exit();
 }
