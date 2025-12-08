@@ -26,6 +26,7 @@ echo json_encode([
         "firstname" => $user["firstname"],
         "lastname" => $user["lastname"],
         "username" => $user["username"],
+        "date_of_birth" => $data["date_of_birth"],
         "email" => $user["email"]
     ],
     "token" => $token
