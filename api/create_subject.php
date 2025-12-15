@@ -1,7 +1,12 @@
 <?php
-session_start();
 include "headers.php";
+session_start();
 include "db_conn.php";
+
+session_unset();
+session_destroy();
+
+echo json_encode(["success" => true]);
 
 if (!isset($_SESSION["user"])) {
     http_response_code(401);

@@ -1,5 +1,6 @@
 <?php
 include "headers.php";
+session_start();
 include "db_conn.php";
 
 $data = json_decode(file_get_contents("php://input"), true);
