@@ -3,11 +3,6 @@ include "headers.php";
 session_start();
 include "db_conn.php";
 
-session_unset();
-session_destroy();
-
-echo json_encode(["success" => true]);
-
 if (!isset($_SESSION["user"])) {
     http_response_code(401);
     echo json_encode(["erro" => "Não autorizado"]);
@@ -28,8 +23,8 @@ if (!isset($_SESSION['subject'])) {
 
 $userId = $_SESSION["user"]["id"];
 
-$validStatus = ['notStarted', 'ongoint', 'onhold', 'done'];
-$validCategory = ['ai', 'history', 'math', 'programming', 'computing', 'engineering', 'language', 'linguistics', 'science', 'economics', 'law', 'world', 'biology', 'humanities', 'politics', 'other'];
+$validStatus = ['notstarted', 'ongoint', 'onhold', 'done'];
+$validCategory = ['history', 'math', 'programming', 'computing', 'engineering', 'language', 'linguistics', 'science', 'economics', 'law', 'world', 'biology', 'humanities', 'politics', 'other'];
 $validPriority = ['low', 'medium', 'high', 'urgent'];
 
 $status = in_array($data['status'] ?? '', $validStatus) ? $data['status'] : 'notStarted';
@@ -47,9 +42,9 @@ try {
         trim($data["title"]),
         $data["link"] ?? null,
         $data["description"] ?? null,
-        $data["category"] ?? null,
-        $data["status"] ?? "active",
-        $data["priority"] ?? "normal",
+        $category ?? null,
+        $status ?? "notstarted",
+        $priority ?? "medium",
         json_encode($data["tags"] ?? [])
     ]);
 
