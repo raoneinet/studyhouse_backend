@@ -27,7 +27,7 @@ $validStatus = ['notstarted', 'ongoint', 'onhold', 'done'];
 $validCategory = ['history', 'math', 'programming', 'computing', 'engineering', 'language', 'linguistics', 'science', 'economics', 'law', 'world', 'biology', 'humanities', 'politics', 'other'];
 $validPriority = ['low', 'medium', 'high', 'urgent'];
 
-$status = in_array($data['status'] ?? '', $validStatus) ? $data['status'] : 'notStarted';
+$status = in_array($data['status'] ?? '', $validStatus) ? $data['status'] : 'notstarted';
 $category = in_array($data['category'] ?? '', $validCategory) ? $data['category'] : 'other';
 $priority = in_array($data['priority'] ?? '', $validPriority) ? $data['priority'] : 'medium';
 
@@ -42,16 +42,16 @@ try {
         trim($data["title"]),
         $data["link"] ?? null,
         $data["description"] ?? null,
-        $category ?? null,
-        $status ?? "notstarted",
-        $priority ?? "medium",
+        $category,
+        $status,
+        $priority,
         json_encode($data["tags"] ?? [])
     ]);
 
     $subjectId = $conn->lastInsertId();
 
     $subject = [
-        $userId,
+        "user_id" => $userId,
         "title" => $data["title"],
         "link" => $data["link"] ?? null,
         "description" => $data["description"] ?? null,
