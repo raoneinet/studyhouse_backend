@@ -55,10 +55,10 @@ try {
         "title" => $data["title"],
         "link" => $data["link"] ?? null,
         "description" => $data["description"] ?? null,
-        "category" => $data["category"] ?? null,
-        "status" => $data["status"] ?? null,
-        "priority" => $data["priority"] ?? null,
-        "tags" => $data["tags"] ?? null,
+        "category" => $data["category"],
+        "status" => $data["status"],
+        "priority" => $data["priority"],
+        "tags" => $data["tags"] ?? [],
         "created_at" => $data["created_at"] ?? null
     ];
 
