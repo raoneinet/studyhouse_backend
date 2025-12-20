@@ -24,9 +24,15 @@ try {
 
     $subjects = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    foreach ($subjects as $subject) {
+    foreach ($subjects as &$subject) {
         $subject["tags"] = $subject["tags"]
             ? json_decode($subject["tags"], true)
+            : [];
+    }
+
+    foreach($subjects as &$subject){
+        $subject['links'] = $subject['links']
+            ? json_decode($subject['links'], true)
             : [];
     }
 
