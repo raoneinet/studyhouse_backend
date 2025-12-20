@@ -11,6 +11,21 @@ if (!isset($_SESSION["user"])) {
 
 $data = json_decode(file_get_contents("php://input"), true);
 
+$links = [];
+
+if (!empty($data['links'] && is_array($data['links']))) {
+    foreach ($data['links'] as $item) {
+        if (!empty($item['value'])) {
+            $links[] = $item['value'];
+        }
+    }
+}
+
+
+$links = array_filter($links, function ($url) {
+    return filter_var($url, FILTER_VALIDATE_URL);
+});
+
 if (!$data || empty($data["title"])) {
     http_response_code(400);
     echo json_encode(['erro' => 'Título do assunto é obrigatório']);
@@ -23,7 +38,7 @@ if (!isset($_SESSION['subject'])) {
 
 $userId = $_SESSION["user"]["id"];
 
-$validStatus = ['notstarted', 'ongoint', 'onhold', 'done'];
+$validStatus = ['notstarted', 'ongoing', 'onhold', 'done'];
 $validCategory = ['history', 'math', 'programming', 'computing', 'engineering', 'language', 'linguistics', 'science', 'economics', 'law', 'world', 'biology', 'humanities', 'politics', 'other'];
 $validPriority = ['low', 'medium', 'high', 'urgent'];
 
@@ -34,13 +49,13 @@ $priority = in_array($data['priority'] ?? '', $validPriority) ? $data['priority'
 try {
     $stmt = $conn->prepare(
         "INSERT INTO subjects
-    (user_id, title, link, description, category, status, priority, tags)
+    (user_id, title, links, description, category, status, priority, tags)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
     );
     $stmt->execute([
         $userId,
         trim($data["title"]),
-        $data["link"] ?? null,
+        !empty($links) ? json_encode($links) : null,
         $data["description"] ?? null,
         $category,
         $status,
@@ -53,7 +68,7 @@ try {
     $subject = [
         "user_id" => $userId,
         "title" => $data["title"],
-        "link" => $data["link"] ?? null,
+        "links" => $data["links"] ?? null,
         "description" => $data["description"] ?? null,
         "category" => $data["category"],
         "status" => $data["status"],
