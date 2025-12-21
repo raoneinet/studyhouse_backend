@@ -36,10 +36,12 @@ try {
             : [];
     }
 
-    echo json_encode([
-        "sucesso" => true,
-        "subjects" => $subjects
-    ]);
+    // echo json_encode([
+    //     "sucesso" => true,
+    //     "subjects" => $subjects
+    // ]);
+
+    echo json_encode($subjects);
 
 } catch (PDOException $e) {
     http_response_code(500);
