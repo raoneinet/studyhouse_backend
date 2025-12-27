@@ -14,7 +14,7 @@ $userId = $_SESSION["user"]["id"];
 try {
 
     $stmt = $conn->prepare(
-        "SELECT id, title, links, description, category, status, priority, tags, created_at 
+        "SELECT id, title, links, description, category, status, priority, tags, created_at, is_favorite 
         FROM subjects 
         WHERE user_id = ?
         ORDER BY created_at DESC"
