@@ -1,12 +1,4 @@
 <?php
-$raw = file_get_contents("php://input");
-$data = json_decode($raw, true);
-
-file_put_contents("debug_favorite.txt", print_r([
-    "raw" => $raw,
-    "data" => $data,
-    "session" => $_SESSION
-], true));
 include "headers.php";
 session_start();
 include "db_conn.php";
