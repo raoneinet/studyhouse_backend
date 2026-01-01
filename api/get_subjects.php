@@ -11,32 +11,48 @@ if (!isset($_SESSION["user"])) {
 
 $userId = $_SESSION["user"]["id"];
 
-try {
+// Pegando página e limite da query string, com valores padrão
+$page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+$limit = isset($_GET['limit']) ? max(1, intval($_GET['limit'])) : 3;
+$offset = ($page - 1) * $limit;
 
+try {
+    // Contar total de assuntos para essa pessoa
+    $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM subjects WHERE user_id = ?");
+    $countStmt->execute([$userId]);
+    $totalItems = $countStmt->fetch(PDO::FETCH_ASSOC)['total'];
+    $totalPages = ceil($totalItems / $limit);
+
+    // Buscar assuntos paginados
     $stmt = $conn->prepare(
-        "SELECT id, title, links, description, category, status, priority, tags, created_at, is_favorite 
-        FROM subjects 
-        WHERE user_id = ?
-        ORDER BY created_at DESC"
+        "SELECT id, title, links, description, category, status, priority, tags, created_at, is_favorite
+         FROM subjects 
+         WHERE user_id = ? 
+         ORDER BY created_at DESC
+         LIMIT ? OFFSET ?"
     );
 
-    $stmt->execute([$userId]);
+    // IMPORTANTE: Para valores numéricos, bindValue com PDO::PARAM_INT
+    $stmt->bindValue(1, $userId, PDO::PARAM_INT);
+    $stmt->bindValue(2, $limit, PDO::PARAM_INT);
+    $stmt->bindValue(3, $offset, PDO::PARAM_INT);
+    $stmt->execute();
 
     $subjects = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     foreach ($subjects as &$subject) {
-        $subject["tags"] = $subject["tags"]
-            ? json_decode($subject["tags"], true)
-            : [];
+        $subject["tags"] = $subject["tags"] ? json_decode($subject["tags"], true) : [];
+        $subject["links"] = $subject["links"] ? json_decode($subject["links"], true) : [];
     }
 
-    foreach($subjects as &$subject){
-        $subject['links'] = $subject['links']
-            ? json_decode($subject['links'], true)
-            : [];
-    }
-
-    echo json_encode($subjects);
+    // Retornar dados junto com informações de paginação
+    echo json_encode([
+        "data" => $subjects,
+        "page" => $page,
+        "limit" => $limit,
+        "totalItems" => $totalItems,
+        "totalPages" => $totalPages
+    ]);
 
 } catch (PDOException $e) {
     http_response_code(500);
