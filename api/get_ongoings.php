@@ -16,7 +16,7 @@ $limit = isset($_GET['limit']) ? max(1, intval($_GET['limit'])) : 3;
 $offset = ($page - 1) * $limit;
 
 try {
-    $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM subjects WHERE user_id = ?");
+    $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM subjects WHERE user_id = ? AND status = 'ongoing'");
     $countStmt->execute([$userId]);
     $totalItems = $countStmt->fetch(PDO::FETCH_ASSOC)['total'];
     $totalPages = ceil($totalItems / $limit);
@@ -24,7 +24,7 @@ try {
     $stmt = $conn->prepare(
         "SELECT id, title, links, description, category, status, priority, tags, created_at, is_favorite
          FROM subjects 
-         WHERE user_id = ? 
+         WHERE user_id = ? AND status = 'ongoing'
          ORDER BY created_at DESC
          LIMIT ? OFFSET ?"
     );
@@ -41,7 +41,6 @@ try {
         $subject["links"] = $subject["links"] ? json_decode($subject["links"], true) : [];
     }
 
-    // Retornar dados junto com informações de paginação
     echo json_encode([
         "data" => $subjects,
         "page" => $page,
