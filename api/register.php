@@ -7,6 +7,8 @@ $firstname = $_POST["firstname"] ?? "";
 $lastname = $_POST["lastname"] ?? "";
 $username = $_POST["username"] ?? "";
 $date_of_birth = $_POST["date_of_birth"] ?? "";
+$profession = $_POST["profession"] ?? "";
+$country = $_POST["country"] ?? "";
 $email = $_POST["email"] ?? "";
 $password = $_POST["password"] ?? "";
 
@@ -75,9 +77,9 @@ $hash = password_hash($password, PASSWORD_DEFAULT);
 
 $stmt = $conn->prepare(
     "INSERT INTO user 
-    (firstname, lastname, avatar, username, date_of_birth, email, password) 
-    VALUES (?, ?, ?, ?, ?, ?, ?)"
+    (firstname, lastname, avatar, username, date_of_birth, profession, country, email, password) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
 );
-$stmt->execute([$firstname, $lastname, $avatar, $username, $date_of_birth, $email, $hash]);
+$stmt->execute([$firstname, $lastname, $avatar, $username, $date_of_birth, $profession, $country, $email, $hash]);
 
 echo json_encode(["status" => "success", "message" => "Usuário registrado com sucesso"]);
