@@ -23,11 +23,11 @@ if (!$user || !password_verify($pass, $user["password"])) {
     exit();
 }
 
-
 $_SESSION["user"] = [
     "id" => $user["id"],
     "firstname" => $user["firstname"],
     "lastname" => $user["lastname"],
+    "avatar" => $user["avatar"] ?? "/uploads/default-avatar.png",
     "username" => $user["username"],
     "date_of_birth" => $user["date_of_birth"],
     "email" => $user["email"]

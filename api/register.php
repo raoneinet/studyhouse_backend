@@ -3,8 +3,6 @@ include "headers.php";
 session_start();
 include "db_conn.php";
 
-//$data = json_decode(file_get_contents("php://input"), true);
-
 $firstname = $_POST["firstname"] ?? "";
 $lastname = $_POST["lastname"] ?? "";
 $username = $_POST["username"] ?? "";
@@ -41,12 +39,26 @@ if (isset($_FILES["avatar"]) && $_FILES["avatar"]["error"] === 0) {
     $ext = pathinfo($file["name"], PATHINFO_EXTENSION);
     $filename = uniqid("avatar_", true) . "." . $ext;
 
-    $uploadDir = __DIR__ . "/uploads/avatars/";
+    //MUST BE PUT BACK TO ROOT WHEN GOES TO PROD
+    $uploadDir = $_SERVER["DOCUMENT_ROOT"] . "/studyhouse_backend/uploads/avatars/";
+
     if (!is_dir($uploadDir)) {
-        mkdir($uploadDir, 0755, true);
+        if (!mkdir($uploadDir, 0755, true)) {
+            echo json_encode([
+                "status" => "error",
+                "message" => "Não foi possível criar diretório de upload"
+            ]);
+            exit();
+        }
     }
 
-    move_uploaded_file($file["tmp_name"], $uploadDir . $filename);
+    if (!move_uploaded_file($file["tmp_name"], $uploadDir . $filename)) {
+        echo json_encode([
+            "status" => "error",
+            "message" => "Falha ao salvar a imagem"
+        ]);
+        exit();
+    }
 
     $avatar = "/uploads/avatars/" . $filename;
 }
