@@ -30,7 +30,9 @@ $_SESSION["user"] = [
     "avatar" => $user["avatar"] ?? "/uploads/default-avatar.png",
     "username" => $user["username"],
     "date_of_birth" => $user["date_of_birth"],
-    "email" => $user["email"]
+    "email" => $user["email"],
+    "profession" => $user["profession"],
+    "country" => $user["country"],
 ];
 
 $token = bin2hex(random_bytes(32));
