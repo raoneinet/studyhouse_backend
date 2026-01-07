@@ -66,6 +66,12 @@ try {
     $stmt = $conn->prepare($sql);
     $stmt->execute($values);
 
+    $stmt = $conn->prepare("SELECT * FROM user WHERE id = ?");
+    $stmt->execute([$userId]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $_SESSION["user"] = $user;
+
     echo json_encode([
         "sucesso" => true,
         "mensagem" => "Usuário atualizado com sucesso"
