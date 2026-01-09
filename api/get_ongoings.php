@@ -12,7 +12,7 @@ if (!isset($_SESSION["user"])) {
 $userId = $_SESSION["user"]["id"];
 
 $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
-$limit = isset($_GET['limit']) ? max(1, intval($_GET['limit'])) : 3;
+$limit = isset($_GET['limit']) ? max(1, intval($_GET['limit'])) : 10;
 $offset = ($page - 1) * $limit;
 
 try {
