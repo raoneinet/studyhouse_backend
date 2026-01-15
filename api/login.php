@@ -35,6 +35,14 @@ $_SESSION["user"] = [
     "country" => $user["country"],
 ];
 
+if ($user["is_active"] == 0) {
+    $update = $conn->prepare("UPDATE user SET is_active = 1 WHERE id = :id");
+    $update->bindParam(":id", $user["id"], PDO::PARAM_INT);
+    $update->execute();
+
+    $_SESSION["user"]["is_active"] = 1;
+}
+
 $token = bin2hex(random_bytes(32));
 $_SESSION["token"] = $token;
 
