@@ -21,7 +21,7 @@ try {
     }
 
     // 1️⃣ Busca usuário
-    $stmt = $conn->prepare("SELECT * FROM user WHERE email = :email LIMIT 1");
+    $stmt = $conn->prepare("SELECT * FROM users WHERE email = :email LIMIT 1");
     $stmt->bindParam(":email", $email);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);

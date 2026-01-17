@@ -23,7 +23,7 @@ $actual_password = $data["actualPassword"];
 $new_password = $data["newPassword"];
 
 try {
-    $stmt = $conn->prepare("SELECT password FROM user WHERE id = :id");
+    $stmt = $conn->prepare("SELECT password FROM users WHERE id = :id");
     $stmt->bindParam(":id", $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -43,7 +43,7 @@ try {
     $new_password_hash = password_hash($new_password, PASSWORD_DEFAULT);
 
     $update = $conn->prepare("
-        UPDATE user
+        UPDATE users
         SET password = :password 
         WHERE id = :id
     ");

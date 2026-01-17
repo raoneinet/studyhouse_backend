@@ -61,12 +61,12 @@ try {
 
     $values[] = $userId;
 
-    $sql = "UPDATE user SET " . implode(", ", $fields) . " WHERE id = ?";
+    $sql = "UPDATE users SET " . implode(", ", $fields) . " WHERE id = ?";
 
     $stmt = $conn->prepare($sql);
     $stmt->execute($values);
 
-    $stmt = $conn->prepare("SELECT * FROM user WHERE id = ?");
+    $stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
     $stmt->execute([$userId]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 

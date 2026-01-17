@@ -14,7 +14,7 @@ if (!isset($_SESSION["user"]["id"])) {
 $user_id = $_SESSION["user"]["id"];
 
 try {
-    $stmt = $conn->prepare("SELECT id, is_active FROM user WHERE id = :id");
+    $stmt = $conn->prepare("SELECT id, is_active FROM users WHERE id = :id");
     $stmt->bindParam(":id", $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -30,7 +30,7 @@ try {
         exit;
     }
 
-    $update = $conn->prepare("UPDATE user SET is_active = 0 WHERE id = :id");
+    $update = $conn->prepare("UPDATE users SET is_active = 0 WHERE id = :id");
     $update->bindParam(":id", $user_id, PDO::PARAM_INT);
     $update->execute();
 

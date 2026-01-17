@@ -60,7 +60,7 @@ try {
     }
 
     $stmt = $conn->prepare(
-        "UPDATE user SET avatar = ? WHERE id = ?"
+        "UPDATE users SET avatar = ? WHERE id = ?"
     );
 
     $stmt->execute([$avatar, $userId]);

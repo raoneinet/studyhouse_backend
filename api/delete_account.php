@@ -21,7 +21,7 @@ try {
     // 2️⃣ Verifica se já existe exclusão agendada
     $check = $conn->prepare("
         SELECT delete_scheduled_at
-        FROM user
+        FROM users
         WHERE id = :id
         LIMIT 1
     ");
@@ -50,7 +50,7 @@ try {
 
     // 4️⃣ Atualiza banco: agenda exclusão em 2 dias e desativa conta
     $stmt = $conn->prepare("
-        UPDATE user
+        UPDATE users
         SET
             is_active = 0,
             delete_requested_at = NOW(),

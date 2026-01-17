@@ -65,7 +65,7 @@ if (isset($_FILES["avatar"]) && $_FILES["avatar"]["error"] === 0) {
     $avatar = "/uploads/avatars/" . $filename;
 }
 
-$stmt = $conn->prepare("SELECT * FROM user WHERE email = ?");
+$stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
 $stmt->execute([$email]);
 
 if ($stmt->rowCount() > 0) {
@@ -76,7 +76,7 @@ if ($stmt->rowCount() > 0) {
 $hash = password_hash($password, PASSWORD_DEFAULT);
 
 $stmt = $conn->prepare(
-    "INSERT INTO user 
+    "INSERT INTO users 
     (firstname, lastname, avatar, username, date_of_birth, profession, country, email, password) 
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
 );
