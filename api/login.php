@@ -45,7 +45,7 @@ try {
         if ($now < $scheduled) {
             // Ainda dentro do prazo → cancela exclusão e reativa conta
             $reactivate = $conn->prepare("
-                UPDATE user
+                UPDATE users
                 SET
                     is_active = 1,
                     delete_requested_at = NULL,
@@ -72,7 +72,7 @@ try {
     // 3️⃣ Conta pausada/suspensa (is_active = 0 e sem exclusão agendada)
     if ((int)$user["is_active"] === 0) {
         $update = $conn->prepare("
-            UPDATE user
+            UPDATE users
             SET is_active = 1
             WHERE id = :id
         ");
