@@ -3,7 +3,7 @@ include "headers.php";
 session_start();
 include "db_conn.php";
 
-if (!isset($_SESSION["user"])) {
+if (!isset($_SESSION["user"])|| !isset($_SESSION["user"]["id"])) {
     http_response_code(401);
     echo json_encode(["erro" => "Não autorizado"]);
     exit;
